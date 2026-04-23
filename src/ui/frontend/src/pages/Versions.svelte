@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { onMount } from "svelte";
 	import { ScanProtonVersions } from "@bindings/light-launcher-wails/backend/app";
-	import { Browser } from "@wailsio/runtime";
 	import * as core from "@bindings/light-launcher/pkg/core/models";
 	import { notifications } from "@stores/notificationStore";
+	import { Browser } from "@wailsio/runtime";
+	import { onMount } from "svelte";
 
-	import steamIcon from "@icons/steam.png";
 	import externalIcon from "@icons/protron_forked.png";
+	import steamIcon from "@icons/steam.png";
 
 	let protonVersions: core.ProtonTool[] = [];
 	let isLoading = true;
@@ -177,8 +177,8 @@
 				height: 32px;
 				opacity: 0.9;
 				object-fit: contain;
+				filter: brightness(0);
 
-				/* Use dynamic filter for dark mode if needed, but in light mode keep original */
 				:global([data-theme="dark"]) & {
 					filter: brightness(0) invert(1);
 				}

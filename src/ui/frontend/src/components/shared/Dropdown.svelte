@@ -108,7 +108,6 @@
 		overflow-y: auto;
 		z-index: 100;
 		background: var(--glass-surface);
-		backdrop-filter: blur(20px);
 		border: 1px solid var(--glass-border-bright);
 		border-radius: 12px;
 		box-shadow: var(--glass-shadow);
@@ -126,7 +125,7 @@
 		font-size: 0.85rem;
 		border-radius: 8px;
 		cursor: pointer;
-		transition: all 0.2s;
+		transition: all 0.2s ease-out;
 
 		&:hover {
 			background: var(--glass-hover);

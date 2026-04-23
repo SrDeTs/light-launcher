@@ -1,15 +1,15 @@
 <script lang="ts">
-	import { onMount, onDestroy } from "svelte";
 	import {
+		DetectLosslessDll,
+		GetSystemToolsStatus,
 		GetUtilsStatus,
 		InstallLsfg,
 		UninstallLsfg,
-		GetSystemToolsStatus,
-		DetectLosslessDll,
 	} from "@bindings/light-launcher-wails/backend/app";
+	import * as core from "@bindings/light-launcher/pkg/core/models";
 	import { notifications } from "@stores/notificationStore";
 	import { Events } from "@wailsio/runtime";
-	import * as core from "@bindings/light-launcher/pkg/core/models";
+	import { onDestroy, onMount } from "svelte";
 
 	import lsfgPng from "@icons/lsfg.png";
 
@@ -337,6 +337,7 @@
 				color: var(--accent-primary);
 				opacity: 0.9;
 				object-fit: contain;
+				filter: saturate(0) brightness(2);
 			}
 		}
 

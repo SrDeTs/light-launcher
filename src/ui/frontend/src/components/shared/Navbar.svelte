@@ -1,4 +1,6 @@
 <script lang="ts">
+	import appIcon from "@icons/appicon.png";
+
 	export let activePage: string = "home";
 	export let onNavigate: (page: string) => void = () => {};
 	export let toggleTheme: () => void = () => {};
@@ -38,6 +40,9 @@
 </script>
 
 <div class="navbar-wrapper">
+	<div class="brand-logo">
+		<img src={appIcon} alt="App Logo" />
+	</div>
 	<div class="brand-v-text">
 		{#each "LIGHTLAUNCHER".split("") as char, i}
 			<span style="animation-delay: {i * 0.1}s">{char}</span>
@@ -85,7 +90,7 @@
 		gap: 4px;
 		user-select: none;
 		position: absolute;
-		top: 50px;
+		top: 80px;
 
 		span {
 			font-size: 0.75rem;
@@ -94,6 +99,33 @@
 			opacity: 0.7;
 			animation: char-wave 4s infinite ease-in-out;
 			line-height: 1;
+		}
+	}
+
+	.brand-logo {
+		position: absolute;
+		top: 20px;
+		width: 42px;
+		height: 42px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-bottom: -10px;
+		cursor: pointer;
+		transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+		filter: drop-shadow(0 0 3px rgba(black, 0.5));
+
+		&:hover {
+			transform: scale(1.2) rotate(45deg);
+			filter: drop-shadow(0 0 5px rgba(black, 0.7));
+		}
+
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: contain;
+			z-index: 2;
+			position: relative;
 		}
 	}
 

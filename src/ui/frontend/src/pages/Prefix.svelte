@@ -1,22 +1,22 @@
 <script lang="ts">
-	import { onMount } from "svelte";
 	import {
+		CreatePrefix,
+		GetPrefixBaseDir,
+		GetSystemToolsStatus,
+		ListPrefixes,
+		LoadPrefixConfig,
 		PickFolder,
 		RunPrefixTool,
-		ScanProtonVersions,
-		ListPrefixes,
-		GetPrefixBaseDir,
-		CreatePrefix,
 		SavePrefixConfig,
-		LoadPrefixConfig,
-		GetSystemToolsStatus,
+		ScanProtonVersions,
 	} from "@bindings/light-launcher-wails/backend/app";
-	import Dropdown from "@components/shared/Dropdown.svelte";
-	import ConfigForm from "@components/shared/ConfigForm.svelte";
-	import ToolButton from "@components/shared/ToolButton.svelte";
 	import * as core from "@bindings/light-launcher/pkg/core/models";
-	import { notifications } from "@stores/notificationStore";
+	import ConfigForm from "@components/shared/ConfigForm.svelte";
+	import Dropdown from "@components/shared/Dropdown.svelte";
+	import ToolButton from "@components/shared/ToolButton.svelte";
 	import { createLaunchOptions } from "@lib/formService";
+	import { notifications } from "@stores/notificationStore";
+	import { onMount } from "svelte";
 
 	// State
 	let availablePrefixes: string[] = [];
@@ -364,6 +364,7 @@
 			}
 		}
 	}
+
 	.prefix-list {
 		flex: 1;
 		overflow-y: auto;
@@ -372,6 +373,7 @@
 		flex-direction: column;
 		gap: 4px;
 	}
+
 	.prefix-item {
 		display: flex;
 		align-items: center;
@@ -384,18 +386,25 @@
 		cursor: pointer;
 		text-align: left;
 		transition: all 0.2s;
+
 		&:hover {
 			background: var(--glass-hover);
 		}
+
 		&.active {
 			background: var(--accent-primary);
 			color: var(--glass-bg);
 			font-weight: 600;
+
 			.folder-icon {
-				color: var(--glass-bg);
 				opacity: 0.9;
+
+				.material-icons {
+					color: var(--glass-bg);
+				}
 			}
 		}
+
 		.folder-icon {
 			font-size: 1.1rem;
 			display: flex;
@@ -409,6 +418,7 @@
 				color: var(--accent-primary);
 			}
 		}
+
 		.name {
 			flex: 1;
 			overflow: hidden;

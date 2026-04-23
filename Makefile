@@ -5,7 +5,7 @@ DIST_DIR=dist
 PROJECT_DIR=src/ui
 WAILS_BIN=$(shell go env GOPATH)/bin/wails3
 
-build:
+build-all:
 	mkdir -p $(BIN_DIR)
 	$(MAKE) build-instance
 	$(MAKE) build-ui
@@ -21,7 +21,7 @@ package: build-instance
 	cd $(PROJECT_DIR) && PATH="$(shell go env GOPATH)/bin:$(PATH)" $(WAILS_BIN) task package
 	cp $(PROJECT_DIR)/bin/light-launcher* $(BIN_DIR)/
 
-dist: build
+build: build-all
 	rm -rf $(DIST_DIR)
 	mkdir -p $(DIST_DIR)/linux/bin
 	mkdir -p $(DIST_DIR)/linux/share/applications

@@ -8,7 +8,7 @@ info:
      companyName: "AzPepoze" # The name of the company
      productName: "LightLauncher" # The name of the application
      productIdentifier: "com.azpepoze.light-launcher" # The unique product identifier
-     description: "Manage and run Windows games with Proton and Lossless Scaling" # The application description
+     description: "Manage and run Windows games with Wine, Proton and Umu" # The application description
      copyright: "(c) 2026, AzPepoze" # Copyright text
      comments: "LightLauncher - Wails v3 Port" # Comments
      version: "0.1.0" # The application version

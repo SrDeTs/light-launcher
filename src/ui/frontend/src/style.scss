@@ -23,9 +23,9 @@
 [data-theme="dark"] {
 	/* Dark Theme */
 	--glass-bg: #0c0c0e;
-	--glass-surface: rgba(24, 24, 27, 0.7); /* Zinc-900 */
+	--glass-surface: rgba(24, 24, 27, 1);
 	--glass-border: rgba(255, 255, 255, 0.1);
-	--glass-border-bright: rgba(255, 255, 255, 0.25);
+	--glass-border-bright: rgba(255, 255, 255, 0.11);
 	--glass-hover: rgba(255, 255, 255, 0.05);
 	--glass-low-alpha: rgba(255, 255, 255, 0.03);
 	--glass-high-alpha: rgba(255, 255, 255, 0.15);
