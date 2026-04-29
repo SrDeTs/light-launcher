@@ -2,7 +2,7 @@ BINARY_NAME=light-launcher
 INSTANCE_BIN=light-launcher-instance
 BIN_DIR=bin
 DIST_DIR=dist
-PROJECT_DIR=src/ui
+PROJECT_DIR=ui
 WAILS_BIN=$(shell go env GOPATH)/bin/wails3
 
 build-all:
@@ -11,7 +11,7 @@ build-all:
 	$(MAKE) build-ui
 
 build-instance:
-	cd src && go build -o ../$(BIN_DIR)/$(INSTANCE_BIN) instance/*.go
+	go build -o $(BIN_DIR)/$(INSTANCE_BIN) ./cmd/instance
 
 build-ui:
 	cd $(PROJECT_DIR) && PATH="$(shell go env GOPATH)/bin:$(PATH)" $(WAILS_BIN) task build
@@ -39,6 +39,9 @@ generate-bindings:
 
 dev: build-instance
 	cd $(PROJECT_DIR) && PATH="$(shell go env GOPATH)/bin:$(PATH)" $(WAILS_BIN) dev
+
+start: build
+	$(BIN_DIR)/$(BINARY_NAME)
 
 clean:
 	rm -rf $(BIN_DIR)

@@ -69,6 +69,7 @@ LightLauncher is a games launcher designed to run non-Steam games on Linux using
 - **Native Terminal Integration** – Real-time logs are piped to your preferred terminal (Kitty, Alacritty, etc.) for live debugging.
 - **Automatic Log Management** – Persistent logging to `~/LightLauncher/logs` with automatic rotation (keeps last 10 sessions)
 - **umu-run Core** – Utilizes the Unified Linux Runtime (umu) to provide superior execution for non-Steam games.
+- **Shared Prefix Architecture** – Supports mapping individual or shared prefix environments interchangeably across different Proton versions seamlessly.
 
 ## ARCHITECTURE & EFFICIENCY
 
