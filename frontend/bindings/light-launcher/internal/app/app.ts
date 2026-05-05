@@ -57,9 +57,15 @@ export function GetAllGames(): $CancellablePromise<types$0.GameInfo[]> {
     });
 }
 
+export function GetAppSettings(): $CancellablePromise<types$0.AppSettings | null> {
+    return $Call.ByID(1556318213).then(($result: any) => {
+        return $$createType3($result);
+    });
+}
+
 export function GetConfig(executablePath: string): $CancellablePromise<types$0.LaunchOptions | null> {
     return $Call.ByID(467323163, executablePath).then(($result: any) => {
-        return $$createType3($result);
+        return $$createType5($result);
     });
 }
 
@@ -81,13 +87,13 @@ export function GetInitialLauncherPath(): $CancellablePromise<string> {
 
 export function GetListGpus(): $CancellablePromise<string[]> {
     return $Call.ByID(2880906562).then(($result: any) => {
-        return $$createType4($result);
+        return $$createType6($result);
     });
 }
 
 export function GetLsfgProfileForGame(name: string, gamePath: string): $CancellablePromise<types$0.LsfgProfileData | null> {
     return $Call.ByID(2364232449, name, gamePath).then(($result: any) => {
-        return $$createType6($result);
+        return $$createType8($result);
     });
 }
 
@@ -97,19 +103,19 @@ export function GetPrefixBaseDir(): $CancellablePromise<string> {
 
 export function GetProtonReleases(variantID: string): $CancellablePromise<system$0.GitHubRelease[]> {
     return $Call.ByID(2398722931, variantID).then(($result: any) => {
-        return $$createType8($result);
+        return $$createType10($result);
     });
 }
 
 export function GetProtonVariants(): $CancellablePromise<system$0.ProtonVariant[]> {
     return $Call.ByID(3819014563).then(($result: any) => {
-        return $$createType10($result);
+        return $$createType12($result);
     });
 }
 
 export function GetRunningSessions(): $CancellablePromise<types$0.RunningSession[]> {
     return $Call.ByID(907496109).then(($result: any) => {
-        return $$createType12($result);
+        return $$createType14($result);
     });
 }
 
@@ -123,19 +129,19 @@ export function GetShouldEditLsfg(): $CancellablePromise<boolean> {
 
 export function GetSystemInfo(): $CancellablePromise<types$0.SystemInfo> {
     return $Call.ByID(2476472468).then(($result: any) => {
-        return $$createType13($result);
+        return $$createType15($result);
     });
 }
 
 export function GetSystemToolsStatus(): $CancellablePromise<types$0.SystemToolsStatus> {
     return $Call.ByID(3075388133).then(($result: any) => {
-        return $$createType14($result);
+        return $$createType16($result);
     });
 }
 
 export function GetSystemUsage(): $CancellablePromise<types$0.SystemUsage> {
     return $Call.ByID(152950143).then(($result: any) => {
-        return $$createType15($result);
+        return $$createType17($result);
     });
 }
 
@@ -145,7 +151,7 @@ export function GetTotalRam(): $CancellablePromise<number> {
 
 export function GetUtilsStatus(): $CancellablePromise<types$0.UtilsStatus> {
     return $Call.ByID(1326621324).then(($result: any) => {
-        return $$createType16($result);
+        return $$createType18($result);
     });
 }
 
@@ -163,13 +169,13 @@ export function KillSession(pid: number): $CancellablePromise<void> {
 
 export function ListPrefixes(): $CancellablePromise<string[]> {
     return $Call.ByID(941611035).then(($result: any) => {
-        return $$createType4($result);
+        return $$createType6($result);
     });
 }
 
 export function LoadPrefixConfig(prefixName: string): $CancellablePromise<types$0.LaunchOptions | null> {
     return $Call.ByID(3624200489, prefixName).then(($result: any) => {
-        return $$createType3($result);
+        return $$createType5($result);
     });
 }
 
@@ -197,12 +203,20 @@ export function RemoveProfile(mainExecutablePath: string): $CancellablePromise<v
     return $Call.ByID(3662052412, mainExecutablePath);
 }
 
+export function RestartApp(): $CancellablePromise<void> {
+    return $Call.ByID(2246009453);
+}
+
 export function RunGame(options: types$0.LaunchOptions, showLogs: boolean): $CancellablePromise<void> {
     return $Call.ByID(2987102522, options, showLogs);
 }
 
 export function RunPrefixTool(prefixPath: string, toolName: string, protonPattern: string): $CancellablePromise<void> {
     return $Call.ByID(1601725950, prefixPath, toolName, protonPattern);
+}
+
+export function SaveAppSettings(settings: types$0.AppSettings): $CancellablePromise<void> {
+    return $Call.ByID(2964614164, settings);
 }
 
 export function SaveGameConfig(options: types$0.LaunchOptions): $CancellablePromise<void> {
@@ -219,13 +233,13 @@ export function SavePrefixConfig(prefixName: string, options: types$0.LaunchOpti
 
 export function ScanProtonVersions(): $CancellablePromise<types$0.ProtonTool[]> {
     return $Call.ByID(3192100603).then(($result: any) => {
-        return $$createType18($result);
+        return $$createType20($result);
     });
 }
 
 export function SearchExecutables(folderPath: string, maxDepth: number, excludeNames: string[]): $CancellablePromise<string[]> {
     return $Call.ByID(2697676484, folderPath, maxDepth, excludeNames).then(($result: any) => {
-        return $$createType4($result);
+        return $$createType6($result);
     });
 }
 
@@ -240,20 +254,22 @@ export function UninstallLsfg(): $CancellablePromise<void> {
 // Private type creation functions
 const $$createType0 = types$0.GameInfo.createFrom;
 const $$createType1 = $Create.Array($$createType0);
-const $$createType2 = types$0.LaunchOptions.createFrom;
+const $$createType2 = types$0.AppSettings.createFrom;
 const $$createType3 = $Create.Nullable($$createType2);
-const $$createType4 = $Create.Array($Create.Any);
-const $$createType5 = types$0.LsfgProfileData.createFrom;
-const $$createType6 = $Create.Nullable($$createType5);
-const $$createType7 = system$0.GitHubRelease.createFrom;
-const $$createType8 = $Create.Array($$createType7);
-const $$createType9 = system$0.ProtonVariant.createFrom;
+const $$createType4 = types$0.LaunchOptions.createFrom;
+const $$createType5 = $Create.Nullable($$createType4);
+const $$createType6 = $Create.Array($Create.Any);
+const $$createType7 = types$0.LsfgProfileData.createFrom;
+const $$createType8 = $Create.Nullable($$createType7);
+const $$createType9 = system$0.GitHubRelease.createFrom;
 const $$createType10 = $Create.Array($$createType9);
-const $$createType11 = types$0.RunningSession.createFrom;
+const $$createType11 = system$0.ProtonVariant.createFrom;
 const $$createType12 = $Create.Array($$createType11);
-const $$createType13 = types$0.SystemInfo.createFrom;
-const $$createType14 = types$0.SystemToolsStatus.createFrom;
-const $$createType15 = types$0.SystemUsage.createFrom;
-const $$createType16 = types$0.UtilsStatus.createFrom;
-const $$createType17 = types$0.ProtonTool.createFrom;
-const $$createType18 = $Create.Array($$createType17);
+const $$createType13 = types$0.RunningSession.createFrom;
+const $$createType14 = $Create.Array($$createType13);
+const $$createType15 = types$0.SystemInfo.createFrom;
+const $$createType16 = types$0.SystemToolsStatus.createFrom;
+const $$createType17 = types$0.SystemUsage.createFrom;
+const $$createType18 = types$0.UtilsStatus.createFrom;
+const $$createType19 = types$0.ProtonTool.createFrom;
+const $$createType20 = $Create.Array($$createType19);

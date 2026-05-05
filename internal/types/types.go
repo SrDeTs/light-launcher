@@ -32,6 +32,7 @@ type ExtrasConfig struct {
 }
 
 type LaunchOptions struct {
+	ID            string       `json:"ID"`
 	Name          string       `json:"Name"`
 	RunnerPath    string       `json:"RunnerPath"`
 	GamePath      string       `json:"GamePath"`
@@ -100,4 +101,8 @@ type ProtonTool struct {
 	Path        string `json:"Path"`
 	IsSteam     bool   `json:"IsSteam"`
 	DisplayName string `json:"DisplayName"`
+}
+
+type AppSettings struct {
+	TransparentMode bool `json:"TransparentMode"`
 }

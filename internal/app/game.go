@@ -230,7 +230,12 @@ func (app *App) KillSession(pid int) error {
 }
 
 func (app *App) RemoveGame(executablePath string) error {
-	configDirectory := config.GetExecutableConfigPath(executablePath)
+	cfg, err := app.GetConfig(executablePath)
+	if err != nil {
+		return fmt.Errorf("could not find game to remove: %w", err)
+	}
+
+	configDirectory := config.GetExecutableConfigPath(cfg.Name, cfg.ID)
 
 	if _, err := os.Stat(configDirectory); err == nil {
 		if err := os.RemoveAll(configDirectory); err != nil {
@@ -238,7 +243,7 @@ func (app *App) RemoveGame(executablePath string) error {
 		}
 	}
 
-	_ = lsfg.DisableProfileInConfig("", executablePath)
+	_ = lsfg.DisableProfileInConfig(cfg.Name, executablePath)
 	return nil
 }
 

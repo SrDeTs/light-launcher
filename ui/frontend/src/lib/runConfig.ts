@@ -94,17 +94,16 @@ export function applyConfigToOptions(
 	// Copy Extras
 	if (config.Extras) {
 		const currentDll = options.Extras?.Lsfg?.DllPath;
-		options.Extras = {
-			EnableMangoHud: config.Extras.EnableMangoHud,
-			EnableGamemode: config.Extras.EnableGamemode,
-			Lsfg: { ...config.Extras.Lsfg },
-			Gamescope: { ...config.Extras.Gamescope },
-			Memory: { ...config.Extras.Memory }
-		};
 		
-		if (!options.Extras.Lsfg.DllPath && currentDll) {
-			options.Extras.Lsfg.DllPath = currentDll;
+		// Use structuredClone to ensure we have a deep copy of the config's extras
+		const newExtras = structuredClone(config.Extras);
+		
+		// Preserve current DLL path if not set in config
+		if (!newExtras.Lsfg.DllPath && currentDll) {
+			newExtras.Lsfg.DllPath = currentDll;
 		}
+		
+		options.Extras = newExtras;
 	}
 	
 	if (!options.RunnerPath && config.RunnerPath) {

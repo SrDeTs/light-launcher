@@ -28,7 +28,7 @@
 	import { runState } from "@stores/runState";
 	import { get } from "svelte/store";
 	import { Window } from "@wailsio/runtime";
-	import { createLaunchOptions } from "@lib/formService";
+	import { createLaunchOptions, mergeOptions } from "@lib/formService";
 
 	// Component State
 	let mounted = false;
@@ -86,10 +86,15 @@
 	}
 
 	function handleConfigUpdate(newOpts: core.LaunchOptions, pPath: string, pName: string, proton: string) {
-		options = newOpts;
+		options = { ...newOpts };
 		if (pPath) prefixPath = pPath;
 		if (pName) selectedPrefixName = pName;
-		if (proton && selectedProton === "") selectedProton = proton;
+		if (proton) {
+			selectedProton = proton;
+			if (proton && !protonOptions.includes(proton)) {
+				protonOptions = [...protonOptions, proton];
+			}
+		}
 	}
 
 	async function doLoadConfigForGame(path: string) {
@@ -127,7 +132,7 @@
 					selectedPrefixName = s.selectedPrefixName;
 				if (s.selectedProton) selectedProton = s.selectedProton;
 				if (s.options) {
-					options = { ...options, ...s.options };
+					options = mergeOptions(options, s.options);
 				}
 			}
 
@@ -394,11 +399,12 @@
 		/>
 
 		<div class="actions-row">
-			<button class="btn secondary save-btn" on:click={handleSave} disabled={isSaving}>
+			<div class="launch-wrapper">
+				<LaunchButton onLaunch={handleLaunch} />
+			</div>
+			<button class="icon-btn save-btn" on:click={handleSave} disabled={isSaving} title="Save Configuration">
 				<span class="material-icons">{isSaving ? "sync" : "save"}</span>
-				{isSaving ? "Saving..." : "Save Configuration"}
 			</button>
-			<LaunchButton onLaunch={handleLaunch} />
 		</div>
 	</div>
 </div>
@@ -456,49 +462,54 @@
 	}
 
 	.actions-row {
+		position: sticky;
+		bottom: -32px;
+		margin: 48px -32px -32px -32px;
+		padding: 32px;
+		z-index: 10;
+		background: linear-gradient(to top, var(--glass-bg) 80%, transparent);
 		display: flex;
-		justify-content: flex-end;
-		gap: 16px;
-		margin-top: 8px;
 		align-items: center;
+		gap: 16px;
+		pointer-events: none;
+	}
 
-		.save-btn {
-			display: flex;
-			align-items: center;
-			gap: 8px;
-			padding: 12px 24px;
-			border-radius: 12px;
-			font-weight: 800;
-			text-transform: uppercase;
-			letter-spacing: 0.5px;
-			background: var(--glass-surface);
+	.launch-wrapper {
+		flex: 1;
+		pointer-events: auto;
+	}
+
+	.save-btn {
+		pointer-events: auto;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 60px;
+		height: 60px;
+		border-radius: 14px;
+		background: var(--glass-surface);
+		color: var(--text-muted);
+		border: 1px solid var(--glass-border);
+		cursor: pointer;
+		transition: all 0.2s;
+
+		&:hover:not(:disabled) {
+			background: var(--glass-border);
 			color: var(--text-main);
-			border: 1px solid var(--glass-border);
-			cursor: pointer;
-			transition: all 0.2s;
+			border-color: var(--glass-border-bright);
+			transform: scale(1.05);
+		}
 
-			&:hover:not(:disabled) {
-				background: var(--glass-border);
-				border-color: var(--glass-border-bright);
-				transform: translateY(-1px);
-			}
-
-			&:active {
-				transform: translateY(0);
-			}
-
-			&:disabled {
-				opacity: 0.5;
-				cursor: not-allowed;
-
-				.material-icons {
-					animation: spin 2s linear infinite;
-				}
-			}
-
+		&:disabled {
+			opacity: 0.5;
+			cursor: not-allowed;
 			.material-icons {
-				font-size: 20px;
+				animation: spin 2s linear infinite;
 			}
+		}
+
+		.material-icons {
+			font-size: 24px;
 		}
 	}
 

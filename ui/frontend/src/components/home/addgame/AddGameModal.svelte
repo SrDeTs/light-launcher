@@ -150,7 +150,6 @@
 	async function saveGame(path: string) {
 		const name = path.split("/").pop()?.replace(".exe", "") || "Game";
 		
-		// Try to auto-detect DLL path for the new game
 		let dllPath = "";
 		try {
 			dllPath = await DetectLosslessDll();

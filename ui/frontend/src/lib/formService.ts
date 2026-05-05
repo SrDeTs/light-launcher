@@ -34,20 +34,46 @@ export function resetFormState<T>(state: FormState<T>, defaults: T): void {
  * Merges loaded data with existing options while preserving defaults
  */
 export function mergeOptions(existing: core.LaunchOptions, loaded: Partial<core.LaunchOptions>): core.LaunchOptions {
-	return {
+	const merged = {
 		...existing,
 		...loaded,
 	};
+
+	if (loaded.Extras) {
+		merged.Extras = {
+			...existing.Extras,
+			...loaded.Extras,
+		};
+		if (loaded.Extras.Lsfg) {
+			merged.Extras.Lsfg = {
+				...existing.Extras.Lsfg,
+				...loaded.Extras.Lsfg,
+			};
+		}
+		if (loaded.Extras.Gamescope) {
+			merged.Extras.Gamescope = {
+				...existing.Extras.Gamescope,
+				...loaded.Extras.Gamescope,
+			};
+		}
+		if (loaded.Extras.Memory) {
+			merged.Extras.Memory = {
+				...existing.Extras.Memory,
+				...loaded.Extras.Memory,
+			};
+		}
+	}
+
+	return merged;
 }
 
 /**
  * Initializes LaunchOptions with defaults
  */
 export function createLaunchOptions(overrides?: Partial<core.LaunchOptions>): core.LaunchOptions {
-	return {
-		...DEFAULT_LAUNCH_OPTIONS,
-		...overrides,
-	};
+	const base = structuredClone(DEFAULT_LAUNCH_OPTIONS);
+	if (!overrides) return base;
+	return mergeOptions(base, overrides);
 }
 
 /**

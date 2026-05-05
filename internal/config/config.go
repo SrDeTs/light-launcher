@@ -1,7 +1,10 @@
 package config
 
 import (
+	"crypto/rand"
+	"encoding/hex"
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -11,6 +14,14 @@ import (
 
 	"github.com/pelletier/go-toml/v2"
 )
+
+func GenerateID() string {
+	b := make([]byte, 8)
+	if _, err := rand.Read(b); err != nil {
+		return ""
+	}
+	return hex.EncodeToString(b)
+}
 
 func LoadConfig(path string, value interface{}) error {
 	data, err := os.ReadFile(path)
@@ -74,17 +85,42 @@ func LoadPrefixConfig(prefixName string) (*types.LaunchOptions, error) {
 }
 
 func SaveGameConfig(options types.LaunchOptions) error {
-	path := GetGameConfigFilePath(options.GamePath)
+	if options.ID == "" {
+		options.ID = GenerateID()
+	}
+
+	path := GetGameConfigFilePath(options.Name, options.ID)
+	
+	dir := filepath.Dir(path)
+	if err := os.MkdirAll(dir, 0755); err != nil {
+		return err
+	}
+	
 	return SaveConfig(path, options)
 }
 
-func LoadGameConfig(executablePath string) (*types.LaunchOptions, error) {
-	path := GetGameConfigFilePath(executablePath)
+func LoadGameConfigByID(name string, id string) (*types.LaunchOptions, error) {
+	path := GetGameConfigFilePath(name, id)
 	var options types.LaunchOptions
 	if err := LoadConfig(path, &options); err != nil {
 		return nil, err
 	}
 	return &options, nil
+}
+
+func LoadGameConfig(executablePath string) (*types.LaunchOptions, error) {
+	configs, err := ListGameConfigs()
+	if err != nil {
+		return nil, err
+	}
+
+	for _, cfg := range configs {
+		if cfg.GamePath == executablePath {
+			return &cfg, nil
+		}
+	}
+
+	return nil, fmt.Errorf("config not found for path: %s", executablePath)
 }
 
 func ListGameConfigs() ([]types.LaunchOptions, error) {
@@ -114,8 +150,8 @@ func ListGameConfigs() ([]types.LaunchOptions, error) {
 	return configs, nil
 }
 
-func SaveLsfgProfile(profile lsfg.InternalProfile) error {
-	configPath := GetExecutableConfigPath(profile.GamePath)
+func SaveLsfgProfile(name string, id string, profile lsfg.InternalProfile) error {
+	configPath := GetExecutableConfigPath(name, id)
 
 	if err := os.MkdirAll(configPath, 0755); err != nil {
 		return err
@@ -125,8 +161,8 @@ func SaveLsfgProfile(profile lsfg.InternalProfile) error {
 	return SaveConfig(profilePath, profile)
 }
 
-func LoadLsfgProfile(gamePath string) (*lsfg.InternalProfile, error) {
-	configPath := GetExecutableConfigPath(gamePath)
+func LoadLsfgProfile(name string, id string) (*lsfg.InternalProfile, error) {
+	configPath := GetExecutableConfigPath(name, id)
 
 	profilePath := filepath.Join(configPath, "lsfg_vk.toml")
 	var profile lsfg.InternalProfile
@@ -134,4 +170,25 @@ func LoadLsfgProfile(gamePath string) (*lsfg.InternalProfile, error) {
 		return nil, err
 	}
 	return &profile, nil
+}
+
+func GetAppSettingsPath() string {
+	return filepath.Join(GetBaseDirectory(), "settings.json")
+}
+
+func LoadAppSettings() *types.AppSettings {
+	path := GetAppSettingsPath()
+	var settings types.AppSettings
+	
+	if err := LoadConfig(path, &settings); err != nil {
+		return &types.AppSettings{
+			TransparentMode: true,
+		}
+	}
+	return &settings
+}
+
+func SaveAppSettings(settings types.AppSettings) error {
+	path := GetAppSettingsPath()
+	return SaveConfig(path, settings)
 }

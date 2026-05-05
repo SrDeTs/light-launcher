@@ -156,17 +156,8 @@
 		showDone={false}
 	>
 		<div class="modal-content">
-			<div class="profile-info">
-				<div class="form-group profile-name-group">
-					<label for="profileName">Profile Name</label>
-					<input
-						id="profileName"
-						type="text"
-						class="input profile-input"
-						bind:value={options.Name}
-						placeholder="Enter profile name..."
-					/>
-				</div>
+			<div class="profile-header">
+				<h2 class="profile-title">{options.Name}</h2>
 				<p class="game-path">{options.GamePath}</p>
 			</div>
 
@@ -222,14 +213,26 @@
 		margin: 0 auto;
 	}
 
-	.profile-info {
-		margin-bottom: 16px;
+	.profile-header {
+		margin-bottom: 32px;
+		padding-bottom: 16px;
+		border-bottom: 1px solid var(--glass-border);
+
+		.profile-title {
+			margin: 0 0 8px 0;
+			font-size: 1.75rem;
+			font-weight: 800;
+			color: var(--text-main);
+			letter-spacing: -0.5px;
+		}
 
 		.game-path {
 			margin: 0;
 			color: var(--text-dim);
-			font-size: 0.9rem;
+			font-size: 0.85rem;
 			word-break: break-all;
+			font-family: monospace;
+			opacity: 0.7;
 		}
 	}
 

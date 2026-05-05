@@ -85,6 +85,11 @@ func (app *App) UninstallLsfg() error {
 }
 
 func (app *App) SaveLsfgProfile(profileName, gamePath string, multiplier int, performanceMode bool, dllPath, gpu, flowScale, pacing string, allowFp16 bool) error {
+	cfg, err := app.GetConfig(gamePath)
+	if err != nil {
+		return err
+	}
+
 	if gpu == "" {
 		gpuList := system.GetListGpus()
 		if len(gpuList) > 0 {
@@ -98,11 +103,15 @@ func (app *App) SaveLsfgProfile(profileName, gamePath string, multiplier int, pe
 		return err
 	}
 
-	return lsfg.SaveProfileToPath(profileName, gamePath, configPath, multiplier, performanceMode, dllPath, gpu, flowScale, pacing, allowFp16)
+	return lsfg.SaveProfileToPath(cfg.ID, gamePath, configPath, multiplier, performanceMode, dllPath, gpu, flowScale, pacing, allowFp16)
 }
 
 func (app *App) DisableLsfgProfile(profileName, gamePath string) error {
-	return lsfg.DisableProfileInConfig(profileName, gamePath)
+	cfg, err := app.GetConfig(gamePath)
+	if err != nil {
+		return err
+	}
+	return lsfg.DisableProfileInConfig(cfg.ID, gamePath)
 }
 
 func (app *App) RemoveProfile(mainExecutablePath string) error {

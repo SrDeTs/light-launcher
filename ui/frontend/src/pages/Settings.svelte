@@ -1,13 +1,29 @@
 <script lang="ts">
 	import { settingsStore } from "@stores/settingsStore";
-	import { PickFileCustom } from "@bindings/light-launcher/internal/app/app";
+	import { PickFileCustom, GetAppSettings, SaveAppSettings, RestartApp } from "@bindings/light-launcher/internal/app/app";
 	import { notifications } from "@stores/notificationStore";
+	import { onMount } from "svelte";
 
 	let currentSettings = {
 		theme: "light",
 		transparency: 1.0,
 		backgroundImagePath: "",
 	};
+
+	let appSettings = {
+		TransparentMode: true,
+	};
+
+	onMount(async () => {
+		try {
+			const settings = await GetAppSettings();
+			if (settings) {
+				appSettings = settings;
+			}
+		} catch (err) {
+			console.error("Failed to load app settings", err);
+		}
+	});
 
 	settingsStore.subscribe((val) => {
 		currentSettings = val;
@@ -55,6 +71,19 @@
 		}));
 		notifications.add("Background image cleared", "info");
 	}
+
+	async function toggleTransparentMode() {
+		try {
+			appSettings.TransparentMode = !appSettings.TransparentMode;
+			await SaveAppSettings(appSettings);
+			notifications.add("Restarting app to apply transparency changes...", "info");
+			setTimeout(async () => {
+				await RestartApp();
+			}, 1500);
+		} catch (err) {
+			notifications.add("Failed to save setting", "error");
+		}
+	}
 </script>
 
 <div class="settings-container">
@@ -95,6 +124,12 @@
 					<span class="pct-display"
 						>{Math.round(currentSettings.transparency * 100)}%</span
 					>
+				</div>
+				<div style="margin-top: 16px;">
+					<button class="btn {appSettings.TransparentMode ? 'primary' : 'secondary'}" on:click={toggleTransparentMode}>
+						<span class="material-icons mini-icon">{appSettings.TransparentMode ? 'visibility' : 'visibility_off'}</span>
+						<span>{appSettings.TransparentMode ? 'Transparent Window: ON' : 'Transparent Window: OFF'} (Restarts App)</span>
+					</button>
 				</div>
 			</div>
 		</div>

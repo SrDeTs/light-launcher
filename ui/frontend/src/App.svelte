@@ -90,7 +90,7 @@
 	}
 </script>
 
-<main style="--app-opacity: {transparency}; background-image: {bgBase64 ? `url(${bgBase64})` : 'none'}; background-size: cover; background-position: center; background-repeat: no-repeat;">
+<main style="background-image: {bgBase64 ? `url(${bgBase64})` : 'none'}; background-size: cover; background-position: center; background-repeat: no-repeat;">
 	<div class="app-layout" class:fullscreen={activePage === "editlsfg"}>
 		{#if activePage !== "editlsfg"}
 			<div class="navbar-container">

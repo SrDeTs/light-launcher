@@ -20,22 +20,20 @@
 	let systemRamTotal = 16;
 	let gpuList: string[] = ["Auto (Detect)"];
 
+	$: if (options.Extras.Memory.Value) {
+		const val = parseMemoryValue(options.Extras.Memory.Value);
+		if (val !== memorySliderValue) {
+			memorySliderValue = val;
+		}
+	}
+
 	onMount(async () => {
 		try {
 			const ram = await GetTotalRam();
 			if (ram > 0) systemRamTotal = ram;
-
-			if (options.Extras.Memory.Value) {
-				const numericMatch =
-					options.Extras.Memory.Value.match(/([\d.]+)/);
-				if (numericMatch) {
-					const val = parseMemoryValue(options.Extras.Memory.Value);
-					memorySliderValue = val;
-				}
-			}
-
-			// Load GPUs and auto-detect DLL
+			
 			const { gpus, dll } = await loadLsfgResources();
+
 			if (gpus.length > 0) {
 				gpuList = ["Auto (Detect)", ...gpus];
 			}

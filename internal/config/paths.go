@@ -1,8 +1,6 @@
 package config
 
 import (
-	"crypto/sha1"
-	"encoding/hex"
 	"os"
 	"path/filepath"
 )
@@ -23,25 +21,20 @@ func GetPrefixBaseDirectory() string {
 	return filepath.Join(GetBaseDirectory(), "prefixes")
 }
 
-func GetExecutableConfigPath(executablePath string) string {
-	hasher := sha1.New()
-	hasher.Write([]byte(executablePath))
-	hash := hex.EncodeToString(hasher.Sum(nil))[:8]
+func GetExecutableConfigPath(name string, id string) string {
+	if id == "" {
+		return filepath.Join(GetConfigDirectory(), name)
+	}
 
-	baseName := filepath.Base(executablePath)
-	extension := filepath.Ext(baseName)
-	baseName = baseName[:len(baseName)-len(extension)]
-
-	folderName := baseName + "-" + hash
-	return filepath.Join(GetConfigDirectory(), folderName)
+	return filepath.Join(GetConfigDirectory(), id)
 }
 
-func GetGameConfigFilePath(executablePath string) string {
-	return filepath.Join(GetExecutableConfigPath(executablePath), "config.json")
+func GetGameConfigFilePath(name string, id string) string {
+	return filepath.Join(GetExecutableConfigPath(name, id), "config.json")
 }
 
-func GetGameLsfgConfigPath(executablePath string) string {
-	return filepath.Join(GetExecutableConfigPath(executablePath), "lsfg_vk.toml")
+func GetGameLsfgConfigPath(name string, id string) string {
+	return filepath.Join(GetExecutableConfigPath(name, id), "lsfg_vk.toml")
 }
 
 func GetPrefixConfigPath(prefixName string) string {

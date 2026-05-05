@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 
 	"light-launcher/internal/app"
+	"light-launcher/internal/config"
 	"light-launcher/ui"
 
 	"github.com/wailsapp/wails/v3/pkg/application"
@@ -32,14 +33,24 @@ func main() {
 		},
 	})
 
+	appSettings := config.LoadAppSettings()
+	
+	backgroundType := application.BackgroundTypeSolid
+	backgroundColour := application.NewRGBA(24, 24, 27, 255) // Default dark solid
+	if appSettings.TransparentMode {
+		backgroundType = application.BackgroundTypeTransparent
+		backgroundColour = application.NewRGBA(0, 0, 0, 0)
+	}
+
 	wailsApp.Window.NewWithOptions(application.WebviewWindowOptions{
 		Title:            "LightLauncher",
 		Width:            1024,
 		Height:           768,
-		BackgroundColour: application.NewRGBA(0, 0, 0, 0),
-		BackgroundType:   application.BackgroundTypeTransparent,
+		BackgroundColour: backgroundColour,
+		BackgroundType:   backgroundType,
 		EnableFileDrop:   true,
 	})
+
 
 	wailsApp.RegisterService(application.NewService(backendApp))
 

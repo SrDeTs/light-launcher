@@ -7,8 +7,8 @@ export interface UserSettings {
 }
 
 const defaultSettings: UserSettings = {
-	theme: (localStorage.getItem("theme") as "light" | "dark") || "light",
-	transparency: parseFloat(localStorage.getItem("transparency") || "1.0"),
+	theme: (localStorage.getItem("theme") as "light" | "dark") || "dark",
+	transparency: parseFloat(localStorage.getItem("transparency") || "0.85"),
 	backgroundImagePath: localStorage.getItem("backgroundImagePath") || "",
 };
 
@@ -19,4 +19,5 @@ settingsStore.subscribe((val) => {
 	localStorage.setItem("transparency", val.transparency.toString());
 	localStorage.setItem("backgroundImagePath", val.backgroundImagePath);
 	document.documentElement.dataset.theme = val.theme;
+	document.documentElement.style.setProperty('--app-opacity', val.transparency.toString());
 });

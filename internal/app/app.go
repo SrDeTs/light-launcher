@@ -8,6 +8,7 @@ import (
 	"os/exec"
 	"path/filepath"
 
+	"light-launcher/internal/config"
 	"light-launcher/internal/system"
 	"light-launcher/internal/types"
 
@@ -153,7 +154,7 @@ func (app *App) GetTotalRam() (int, error) {
 }
 
 func (app *App) GetImageBase64(imagePath string) string {
-	if _, err := os.Stat(imagePath); os.IsNotExist(err) {
+	if _, err := os.Stat(imagePath); err != nil {
 		return ""
 	}
 	data, err := os.ReadFile(imagePath)
@@ -171,4 +172,21 @@ func (app *App) GetImageBase64(imagePath string) string {
 		mimeType = "image/webp"
 	}
 	return fmt.Sprintf("data:%s;base64,%s", mimeType, base64.StdEncoding.EncodeToString(data))
+}
+
+func (app *App) GetAppSettings() *types.AppSettings {
+	return config.LoadAppSettings()
+}
+
+func (app *App) SaveAppSettings(settings types.AppSettings) error {
+	return config.SaveAppSettings(settings)
+}
+
+func (app *App) RestartApp() {
+	executable, err := os.Executable()
+	if err == nil {
+		cmd := exec.Command(executable)
+		cmd.Start()
+		application.Get().Quit()
+	}
 }

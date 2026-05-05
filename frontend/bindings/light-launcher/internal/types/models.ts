@@ -5,6 +5,27 @@
 // @ts-ignore: Unused imports
 import { Create as $Create } from "@wailsio/runtime";
 
+export class AppSettings {
+    "TransparentMode": boolean;
+
+    /** Creates a new AppSettings instance. */
+    constructor($$source: Partial<AppSettings> = {}) {
+        if (!("TransparentMode" in $$source)) {
+            this["TransparentMode"] = false;
+        }
+
+        Object.assign(this, $$source);
+    }
+
+    /**
+     * Creates a new AppSettings instance from a string or object.
+     */
+    static createFrom($$source: any = {}): AppSettings {
+        let $$parsedSource = typeof $$source === 'string' ? JSON.parse($$source) : $$source;
+        return new AppSettings($$parsedSource as Partial<AppSettings>);
+    }
+}
+
 export class ExtrasConfig {
     "EnableMangoHud": boolean;
     "EnableGamemode": boolean;
@@ -129,6 +150,7 @@ export class GamescopeConfig {
 }
 
 export class LaunchOptions {
+    "ID": string;
     "Name": string;
     "RunnerPath": string;
     "GamePath": string;
@@ -141,6 +163,9 @@ export class LaunchOptions {
 
     /** Creates a new LaunchOptions instance. */
     constructor($$source: Partial<LaunchOptions> = {}) {
+        if (!("ID" in $$source)) {
+            this["ID"] = "";
+        }
         if (!("Name" in $$source)) {
             this["Name"] = "";
         }
@@ -176,10 +201,10 @@ export class LaunchOptions {
      * Creates a new LaunchOptions instance from a string or object.
      */
     static createFrom($$source: any = {}): LaunchOptions {
-        const $$createField8_0 = $$createType4;
+        const $$createField9_0 = $$createType4;
         let $$parsedSource = typeof $$source === 'string' ? JSON.parse($$source) : $$source;
         if ("Extras" in $$parsedSource) {
-            $$parsedSource["Extras"] = $$createField8_0($$parsedSource["Extras"]);
+            $$parsedSource["Extras"] = $$createField9_0($$parsedSource["Extras"]);
         }
         return new LaunchOptions($$parsedSource as Partial<LaunchOptions>);
     }
