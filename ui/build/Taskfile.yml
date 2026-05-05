@@ -57,7 +57,7 @@ tasks:
           generates:
                - ui/frontend/bindings/**/*
           cmds:
-               - wails3 generate bindings -f '{{.BUILD_FLAGS}}' -clean=true -ts ./...
+               - wails3 generate bindings -f '{{.BUILD_FLAGS}}' -clean=true -ts -d ui/frontend/bindings ./...
 
      dev:frontend:
           summary: Runs the frontend in development mode
