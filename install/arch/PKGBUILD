@@ -2,7 +2,7 @@
 
 
 pkgname=light-launcher
-pkgver=r51.gc81e2a5
+pkgver=r0.git
 pkgrel=1
 pkgdesc="LightLauncher - Proton Instance Manager for Linux"
 arch=('x86_64')
